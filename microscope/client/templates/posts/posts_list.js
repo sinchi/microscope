@@ -1,6 +1,6 @@
 
 Template.postsList.helpers({
-  posts: Posts.find({}, {sort: {submitted: -1}});
+  posts: Posts.find({}, {sort: {submitted: -1}})
 });
 
 Template.postItem.helpers({
