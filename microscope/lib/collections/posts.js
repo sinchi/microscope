@@ -1,5 +1,22 @@
 Posts = new Mongo.Collection("posts");
 
+
+Posts.allow({
+	update: function(userId, post){
+		return ownsDocument(userId, post);
+	},
+	remove: function(userId, post){
+		return ownsDocument(userId, post);
+	}
+});
+
+Posts.deny({
+	update: function(userId, post, fieldNames){
+		// May only edit the followig two fields:
+		return (_.without(fieldNames, 'url', 'title').length > 0);
+	}
+});
+
 Meteor.methods({
 	postInsert: function(postAttributes){
 		check(Meteor.userId(), String);
@@ -27,5 +44,28 @@ Meteor.methods({
 		return {
 			_id: postId
 		};
-	}
+	},
+
+	/*postUpdate: function(post){
+		check(Meteor.userId(), String),
+		check(post, {
+			_id: String,
+			title:String,
+			url: String
+		});
+
+		var postWithSameLink = Posts.findOne({url: post.url});
+		if(postWithSameLink){
+			return {
+				postExists: true,
+				_id: postWithSameLink._id
+			}
+		}
+
+		var postId = Posts.update({_id: post._id}, {$set:post});
+		return {
+			_id: postId
+		};
+
+	}*/
 });
