@@ -1,8 +1,4 @@
 
-Template.postsList.helpers({
-  posts: Posts.find({}, {sort: {submitted: -1}})
-});
-
 Template.postItem.helpers({
   domain: function() {
     var a = document.createElement('a');
